@@ -1,0 +1,13 @@
+{
+    "title": "List of Currency",
+    "code": "No",
+    "currency": "Currency",
+    "exchange_rate_to_VND": "Exchange rate to VND",
+    "exchange_rate_to_USD": "Exchange rate to USD",
+    
+    "information_add_currency": "Add new currency",
+    "information_edit_currency": "Edit Currency",
+    "currency_placeholder": "Choose currency",
+    "exchange_rate_to_VND_placeholder": "Enter exchange rate to VND",
+    "exchange_rate_to_USD_placeholder": "Enter exchange rate to USD"
+}
