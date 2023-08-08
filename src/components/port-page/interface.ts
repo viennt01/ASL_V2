@@ -1,3 +1,5 @@
+import COLORS from '@/constant/color';
+
 export interface PortsData {
   data: PortData[];
   currentPage: number;
@@ -10,11 +12,17 @@ export interface PortData {
   countryID: string;
   portName: string;
   portCode: string;
+  typePorts: TypePortID[];
   status: number;
-  insertedDate: string;
-  insertedBy: string;
-  updatedDate: string;
-  updatedBy: string;
+  description: string;
+  address: string;
+  dateInserted: string;
+  insertedByUser: string;
+  dateUpdated: string;
+  updatedByUser: string;
+}
+export interface TypePortID {
+  typePortID: string;
 }
 
 export interface CountriesData {
@@ -44,34 +52,14 @@ export interface CountryData {
   }[];
 }
 
-export interface CityData {
-  cityID: string;
-  countryID: string;
-  cityName: string;
-  maCK: string;
-  dateInserted: string;
-  insertedBy: string;
-  dateUpdated: string;
-  updatedBy: string;
-}
-
-export interface CityDataBody {
-  id: string;
-}
-
 export interface PortDetailDataBody {
   id: string;
 }
 
-export interface Pagination {
-  currentPage: number;
-  pageSize: number;
-}
-
 export const STATUS_COLORS = {
-  1: '#00A651',
-  2: '#fffbe6',
-  3: '#ED1C27',
+  1: COLORS.ACTIVE,
+  2: COLORS.DEACTIVATE,
+  3: COLORS.BLOCK,
 };
 
 export const STATUS_LABELS = {
@@ -88,28 +76,12 @@ export interface FormValues {
   typePorts: string[];
   status: number;
   address: string;
-  company: string;
+  description: string;
 }
 
-export interface PortCreate {
-  countryID: string;
-  portName: string;
-  portCode: string;
-  typePorts: string[];
-  address: string;
-  company: string;
-}
+export type PortCreate = Omit<FormValues, 'portID' | 'status'>;
 
-export interface PortEdit {
-  portID: string;
-  countryID: string;
-  portName: string;
-  portCode: string;
-  typePorts: string[];
-  address: string;
-  company: string;
-  status: number;
-}
+export type PortEdit = FormValues;
 
 export interface TypePortData {
   typePortID: string;
