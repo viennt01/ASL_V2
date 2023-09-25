@@ -1,6 +1,12 @@
 {
     "home": "Trang chủ",
+    "request_for_approval": "Yêu cầu phê duyệt",
     "quotation": "Báo giá",
+    "air_quotation": "Báo giá đường hàng không",
+    "sea_quotation": "Báo giá đường biển",
+    "customs_quotation": "Báo giá hải quan",
+    "trucking_quotation": "Báo giá vận tải",
+    "quotation_all_in": "Báo giá tổng hợp",
     "booking": "Booking",
     "pricing": "Định giá",
     "sea_pricing": "Định giá đường biển",
@@ -8,20 +14,12 @@
     "customs_pricing": "Định giá hải quan",
     "trucking_pricing": "Định giá vận chuyển xe tải",
     "partner": "Đối tác",
-    "customer": "Khách hàng",
-    "potential_customer": "Khách hàng tiềm năng",
-    "official_customer": "Khách hàng chính thức",
-    "customers_on_sales": "Khách hàng đang sales",
-    "supplier": "Nhà cung cấp",
     "master_data": "Danh mục",
-    "port": "Cảng",
-    "depot": "Depot",
-    "fee": "Loại chi phí",
     "location_catalog": "Danh mục địa điểm",
     "location": "Địa điểm",
     "type_of_location": "Loại địa điểm",
-    "container_catalog": "Danh mục Container",
-    "container": "Container",
+    "fee": "Loại chi phí",
+    "commodity": "Hàng hóa",
     "type_of_container": "Loại Container",
     "unit": "Đơn vị",
     "accountant": "Kế toán",
@@ -40,6 +38,7 @@
     "detail": "Chi tiết",
     "error": "Lỗi",
     "create": "Tạo",
+    "manage": "Quản lý",
     "edit": "Sửa",
     "save": "Lưu",
     "close": "Đóng",
@@ -47,5 +46,32 @@
     "date_created": "Ngày tạo",
     "creator": "Người tạo",
     "date_inserted": "Ngày cập nhật",
-    "inserter": "Người cập nhật"
+    "inserter": "Người cập nhật",
+    "search": "Tìm",
+    "reset": "Bỏ lọc",
+
+    "modal_delete": {
+        "title": "Bạn có chắc chắn muốn xóa?",
+        "button_ok": "Có",
+        "button_cancel": "Không"
+    },
+
+    "modal_close": {
+        "title": "Bạn có chắc muốn thoat khỏi màn hình này không?",
+        "button_ok": "Có",
+        "button_cancel": "Không"
+    },
+
+    "button_bottom_form": {
+        "close": "Đóng",
+        "save": "Lưu",
+        "save_as_draft": "Lưu bản nháp",
+        "edit": "Sửa",
+        "create_request": "Tạo và gửi yêu cầu",
+        "send_request": "Gửi yêu cầu",
+        "cancel": "Huỷ",
+        "approval": "Chấp nhận",
+        "reject": "Từ chối",
+        "create_save": "Copy and Create"
+    }
 }

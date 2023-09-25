@@ -16,17 +16,17 @@ import useI18n from '@/i18n/useI18N';
 //     }, time);
 //   });
 // };
-export default function CreateExpensesType() {
+export default function CreateFee() {
   const [form] = Form.useForm<{ name: string; company: string }>();
   const { translate: translateCommon } = useI18n('common');
-  const { translate: translateAddfee } = useI18n('fee');
+  const { translate: translateAddFee } = useI18n('fee');
 
   return (
     <ModalForm<{
       name: string;
       company: string;
     }>
-      title={translateAddfee('information_add_fee')}
+      title={translateAddFee('information_add_fee')}
       trigger={
         <Button
           type="primary"
@@ -64,8 +64,8 @@ export default function CreateExpensesType() {
         <ProFormText
           width="md"
           name="Namefee"
-          label={translateAddfee('name')}
-          placeholder={translateAddfee('name_placeholder')}
+          label={translateAddFee('name')}
+          placeholder={translateAddFee('name_placeholder')}
         />
 
         <ProFormSelect
@@ -81,8 +81,8 @@ export default function CreateExpensesType() {
           ]}
           width="md"
           name="Status"
-          label={translateAddfee('status')}
-          placeholder={translateAddfee('status_placeholder')}
+          label={translateAddFee('status')}
+          placeholder={translateAddFee('status_placeholder')}
         />
       </ProForm.Group>
     </ModalForm>

@@ -1,6 +1,12 @@
 {
     "home": "Home",
+    "request_for_approval": "Request for approval",
     "quotation": "Quotation",
+    "air_quotation": "Air Quotation",
+    "sea_quotation": "Sea Quotation",
+    "customs_quotation": "Customs Quotation",
+    "trucking_quotation": "Trucking Quotation",
+    "quotation_all_in": "Quotation All In",
     "booking": "Booking",
     "pricing": "Pricing",
     "sea_pricing": "Sea Pricing",
@@ -8,20 +14,12 @@
     "customs_pricing": "Customs Pricing",
     "trucking_pricing": "Trucking Pricing",
     "partner": "Partner",
-    "customer": "Customer",
-    "potential_customer": "Potential Customer",
-    "official_customer": "Official Customer",
-    "customers_on_sales": "Customer (on sales)",
-    "supplier": "Liner/Vendor/Supplier",
     "master_data": "Master data",
-    "port": "Port",
-    "depot": "Depot",
-    "fee": "Fee",
     "location_catalog": "Location catalog",
     "location": "Location",
     "type_of_location": "Type of Location",
-    "container_catalog": "Container catalog",
-    "container": "Container",
+    "fee": "Fee",
+    "commodity": "Commodity",
     "type_of_container": "Type of Container",
     "unit": "Type of Unit",
     "accountant": "Accounting",
@@ -40,6 +38,7 @@
     "detail": "Detail",
     "error": "Error",
     "create": "Create",
+    "manage": "Manage",
     "edit": "Edit",
     "save": "Save",
     "close": "Close",
@@ -47,5 +46,32 @@
     "date_created": "Date created",
     "creator": "Creator",
     "date_inserted": "Date updated",
-    "inserter": "Update by user"
+    "inserter": "Update by user",
+    "search": "Search",
+    "reset": "Reset",
+
+    "modal_delete": {
+        "title": "Are you sure you want to delete?",
+        "button_ok": "Yes",
+        "button_cancel": "No"
+    },
+
+    "modal_close": {
+        "title": "Are you sure you want to exit this screen?",
+        "button_ok": "Yes",
+        "button_cancel": "No"
+    },
+
+    "button_bottom_form": {
+        "close": "Close",
+        "save": "Save",
+        "save_as_draft": "Save as draft",
+        "edit": "Edit",
+        "create_request": "Create and Request",
+        "send_request": "Send request",
+        "cancel": "Cancel",
+        "approval": "Approval",
+        "reject": "Reject",
+        "create_save": "Copy and Create"
+    }
 }

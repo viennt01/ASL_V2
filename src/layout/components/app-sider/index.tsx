@@ -16,12 +16,13 @@ import {
   ClusterOutlined,
   ApartmentOutlined,
   UsergroupAddOutlined,
-  GoldOutlined,
-  UserAddOutlined,
-  UserSwitchOutlined,
+  GlobalOutlined,
+  EnvironmentOutlined,
+  FolderOpenOutlined,
+  ShoppingOutlined,
   AuditOutlined,
 } from '@ant-design/icons';
-import { Button, MenuProps, Image } from 'antd';
+import { Button, MenuProps, Image, Badge } from 'antd';
 import { Layout, Menu, Row, Col } from 'antd';
 import { ROUTERS } from '@/constant/router';
 import { useRouter } from 'next/router';
@@ -35,6 +36,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { LogoutData, logout } from './fetcher';
 import { UserInfo, checkNewUser } from '@/layout/fetcher';
 import { ResponseWithPayload } from '@/fetcherAxios';
+import { API_USER } from '@/fetcherAxios/endpoint';
 
 const { Text, Title } = Typography;
 const { Sider } = Layout;
@@ -49,7 +51,6 @@ function getItem(
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
-  // disabled?: boolean,
   children?: MenuItem[]
 ): MenuItem {
   return {
@@ -57,7 +58,6 @@ function getItem(
     icon,
     children,
     label,
-    // disabled,
   } as MenuItem;
 }
 
@@ -70,6 +70,11 @@ const AppSider = ({ collapsed }: Props) => {
   const { translate: translateCommon } = useI18n('common');
   const refHome = useRef(null);
   const refQuotation = useRef(null);
+  const refSeaQuotation = useRef(null);
+  const refAirQuotation = useRef(null);
+  const refCustomsQuotation = useRef(null);
+  const refTruckingQuotation = useRef(null);
+  const refQuotationAllIn = useRef(null);
   const refBooking = useRef(null);
   const refPricing = useRef(null);
   const refSeaPricing = useRef(null);
@@ -79,12 +84,10 @@ const AppSider = ({ collapsed }: Props) => {
   const refPartner = useRef(null);
   const refMasterData = useRef(null);
   const refSystem = useRef(null);
-  const refCustomer = useRef(null);
-  const refPotentialCustomer = useRef(null);
-  const refOfficialCustomer = useRef(null);
-  const refCustomersAreOnSales = useRef(null);
-  const refSupplier = useRef(null);
-  const refPort = useRef(null);
+  const refLocationCatalog = useRef(null);
+  const refTypeOfLocation = useRef(null);
+  const refLocation = useRef(null);
+  const refCommodity = useRef(null);
   const refTypeOfContainer = useRef(null);
   const refFee = useRef(null);
   const refAccountant = useRef(null);
@@ -97,8 +100,9 @@ const AppSider = ({ collapsed }: Props) => {
   const [openTour, setOpenTour] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const dataUser = queryClient.getQueryData<ResponseWithPayload<UserInfo>>([
-    'user',
+    API_USER.CHECK_USER,
   ]);
+
   const checkNewUserFirst = useMutation({
     mutationFn: () => checkNewUser(),
   });
@@ -134,7 +138,8 @@ const AppSider = ({ collapsed }: Props) => {
     },
     {
       title: 'Hệ thống',
-      description: 'Menu này bao gồm màn hình nhân viên và quyền hạn.',
+      description:
+        'Menu này bao gồm màn hình người dùng, nhân viên và quyền hạn.',
       target: () => refSystem.current,
     },
   ];
@@ -148,8 +153,35 @@ const AppSider = ({ collapsed }: Props) => {
 
     getItem(
       `${translateCommon('quotation')}`,
-      ROUTERS.QUOTATION,
-      <ContainerOutlined ref={refQuotation} />
+      '1',
+      <ContainerOutlined ref={refQuotation} />,
+      [
+        getItem(
+          `${translateCommon('sea_quotation')}`,
+          ROUTERS.SEA_QUOTATION,
+          <ContainerOutlined ref={refSeaQuotation} />
+        ),
+        getItem(
+          `${translateCommon('air_quotation')}`,
+          ROUTERS.AIR_QUOTATION,
+          <ContainerOutlined ref={refAirQuotation} />
+        ),
+        getItem(
+          `${translateCommon('customs_quotation')}`,
+          ROUTERS.CUSTOMS_QUOTATION,
+          <ContainerOutlined ref={refCustomsQuotation} />
+        ),
+        getItem(
+          `${translateCommon('trucking_quotation')}`,
+          ROUTERS.TRUCKING_QUOTATION,
+          <ContainerOutlined ref={refTruckingQuotation} />
+        ),
+        getItem(
+          `${translateCommon('quotation_all_in')}`,
+          ROUTERS.QUOTATION_ALL_IN,
+          <ContainerOutlined ref={refQuotationAllIn} />
+        ),
+      ]
     ),
 
     getItem(
@@ -160,7 +192,7 @@ const AppSider = ({ collapsed }: Props) => {
 
     getItem(
       `${translateCommon('pricing')}`,
-      '1',
+      '2',
       <AuditOutlined ref={refPricing} />,
       [
         getItem(
@@ -188,56 +220,41 @@ const AppSider = ({ collapsed }: Props) => {
 
     getItem(
       `${translateCommon('partner')}`,
-      '2',
-      <TeamOutlined ref={refPartner} />,
-      [
-        // getItem(
-        //   `${translateCommon('customer')}`,
-        //   ROUTERS.CUSTOMER,
-        //   <UserOutlined ref={refCustomer} />
-        // ),
-
-        getItem(
-          `${translateCommon('customer')}`,
-          '3',
-          <UserOutlined ref={refCustomer} />,
-          [
-            getItem(
-              `${translateCommon('potential_customer')}`,
-              ROUTERS.POTENTIAL_CUSTOMER,
-              <UserAddOutlined ref={refPotentialCustomer} />
-            ),
-            getItem(
-              `${translateCommon('official_customer')}`,
-              ROUTERS.OFFICIAL_CUSTOMER,
-              <UserOutlined ref={refOfficialCustomer} />
-            ),
-            getItem(
-              `${translateCommon('customers_on_sales')}`,
-              ROUTERS.CUSTOMER_ON_SALES,
-              <UserSwitchOutlined ref={refCustomersAreOnSales} />
-            ),
-          ]
-        ),
-
-        getItem(
-          `${translateCommon('supplier')}`,
-          ROUTERS.SUPPLIER,
-          <BankOutlined ref={refSupplier} />
-        ),
-      ]
+      ROUTERS.PARTNER,
+      <TeamOutlined ref={refPartner} />
     ),
 
     getItem(
       `${translateCommon('master_data')}`,
-      '4',
-      <AppstoreOutlined ref={refMasterData} />,
+      '5',
+      <Badge
+        dot={collapsed}
+        style={{
+          marginTop: '10px',
+        }}
+      >
+        <AppstoreOutlined ref={refMasterData} />
+      </Badge>,
       [
         getItem(
-          `${translateCommon('port')}`,
-          ROUTERS.PORT,
-          <GoldOutlined ref={refPort} />
+          `${translateCommon('location_catalog')}`,
+          '6',
+          <FolderOpenOutlined ref={refLocationCatalog} />,
+          [
+            getItem(
+              `${translateCommon('location')}`,
+              ROUTERS.LOCATION,
+              <EnvironmentOutlined ref={refLocation} />
+            ),
+
+            getItem(
+              `${translateCommon('type_of_location')}`,
+              ROUTERS.TYPE_OF_LOCATION,
+              <GlobalOutlined ref={refTypeOfLocation} />
+            ),
+          ]
         ),
+
         getItem(
           `${translateCommon('fee')}`,
           ROUTERS.FEE,
@@ -245,7 +262,7 @@ const AppSider = ({ collapsed }: Props) => {
         ),
         getItem(
           `${translateCommon('accountant')}`,
-          '5',
+          '7',
           <DollarOutlined ref={refAccountant} />,
           [
             getItem(
@@ -260,13 +277,28 @@ const AppSider = ({ collapsed }: Props) => {
             ),
           ]
         ),
+
+        getItem(
+          `${translateCommon('commodity')}`,
+          ROUTERS.COMMODITY,
+          <ShoppingOutlined ref={refCommodity} />
+        ),
+
         getItem(
           `${translateCommon('type_of_container')}`,
           ROUTERS.TYPES_OF_CONTAINER,
           <InboxOutlined ref={refTypeOfContainer} />
         ),
+
         getItem(
-          `${translateCommon('unit')}`,
+          <Badge
+            count={2}
+            style={{
+              marginRight: '-12px',
+            }}
+          >
+            {`${translateCommon('unit')}`}
+          </Badge>,
           ROUTERS.UNIT,
           <CalculatorOutlined ref={refUnit} />
         ),
@@ -274,7 +306,7 @@ const AppSider = ({ collapsed }: Props) => {
     ),
     getItem(
       `${translateCommon('system')}`,
-      '6',
+      '8',
       <ClusterOutlined ref={refSystem} />,
       [
         getItem(
@@ -324,9 +356,6 @@ const AppSider = ({ collapsed }: Props) => {
       onOk() {
         logoutUser.mutate(data);
       },
-      onCancel() {
-        console.log('Cancel');
-      },
     });
   };
 
@@ -341,7 +370,7 @@ const AppSider = ({ collapsed }: Props) => {
   useEffect(() => {
     setIpAddress(appLocalStorage.get(LOCAL_STORAGE_KEYS.IP_ADDRESS));
     setDeviceName(appLocalStorage.get(LOCAL_STORAGE_KEYS.DEVICE_NAME));
-    if (dataUser?.data.newUser) {
+    if (dataUser?.data?.newUser) {
       setOpenTour(true);
     }
   }, [dataUser]);

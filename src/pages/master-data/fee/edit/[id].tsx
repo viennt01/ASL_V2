@@ -1,14 +1,14 @@
 import Head from 'next/head';
 import withAuthentication from '@/hook/useAuthentication';
-import EditExpensesType from '@/components/fee-page/fee-edit';
+import Fee from '@/components/fee-page/fee-edit';
 
 function FeeEditPage() {
   return (
     <>
       <Head>
-        <title>ASL | EXPENSES TYPE EDIT</title>
+        <title>ASL | FEE EDIT</title>
       </Head>
-      <EditExpensesType />
+      <Fee />
     </>
   );
 }

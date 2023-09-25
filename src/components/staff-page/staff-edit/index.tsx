@@ -64,7 +64,7 @@ export default function EditLStaff() {
   }, [router, form]);
 
   const onFinish = (formValues: FormValues) => {
-    console.log(formValues);
+    return formValues;
   };
 
   const residences: CascaderProps<DataNodeType>['options'] = [
@@ -399,7 +399,7 @@ export default function EditLStaff() {
                       rules={[
                         {
                           required: true,
-                          message: 'Please input type of status',
+                          message: translateStaff('status_placeholder'),
                         },
                       ]}
                     >
@@ -428,7 +428,7 @@ export default function EditLStaff() {
                         },
                       ]}
                     >
-                      <Input.TextArea placeholder="Nhập ghi chú" />
+                      <Input.TextArea rows={1} placeholder="Nhập ghi chú" />
                     </Form.Item>
                   </Col>
                 </Row>

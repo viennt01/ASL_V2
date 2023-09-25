@@ -76,6 +76,7 @@ const axiosResolver = async (promise: Promise<AxiosResponse>) => {
     .then((res) => {
       if (res.status === 200) return res.data;
       throw new Error(JSON.stringify(res.data) || 'Request failed');
+      // throw new Error(res.data || 'Request failed');
     })
     .catch((err) => {
       throw new Error(err.message);
@@ -94,8 +95,6 @@ apiClient.interceptors.request.use((config) => {
   const accessToken = appLocalStorage.get(LOCAL_STORAGE_KEYS.TOKEN);
   config.headers.languageName =
     appLocalStorage.get(LOCAL_STORAGE_KEYS.LANGUAGE) || LANGUAGE.EN;
-  // console.log('config', config);
-
   if (config.url === `${getGateway()}${API_AUTHENTICATE.LOGIN}`) {
     return config;
   }
@@ -123,6 +122,7 @@ apiClient.interceptors.request.use((config) => {
   }
   return config;
 });
+let isRefreshing = false;
 
 apiClient.interceptors.response.use(
   (response) => response,
@@ -135,28 +135,47 @@ apiClient.interceptors.response.use(
       !originalRequest._retry &&
       appLocalStorage.get(LOCAL_STORAGE_KEYS.TOKEN)
     ) {
-      originalRequest._retry = true;
-      try {
-        const response = await apiClient.post(
-          `${getGateway()}${API_AUTHENTICATE.REFRESH_TOKEN}`,
-          {
-            accessToken: appLocalStorage.get(LOCAL_STORAGE_KEYS.TOKEN),
-            refreshToken: appLocalStorage.get(LOCAL_STORAGE_KEYS.REFRESH_TOKEN),
-            ipAddress: appLocalStorage.get(LOCAL_STORAGE_KEYS.IP_ADDRESS),
-            deviceName: appLocalStorage.get(LOCAL_STORAGE_KEYS.DEVICE_NAME),
-          }
-        );
-        const newAccessToken = response.data.data.accessToken;
-        const newRefreshToken = response.data.data.refreshToken;
-        appLocalStorage.set(LOCAL_STORAGE_KEYS.TOKEN, newAccessToken);
-        appLocalStorage.set(LOCAL_STORAGE_KEYS.REFRESH_TOKEN, newRefreshToken);
-        originalRequest.headers.accessToken = newAccessToken;
-        originalRequest.headers.refreshToken = newRefreshToken;
+      originalRequest._retry = 3;
+      if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+          const response = await apiClient.post(
+            `${getGateway()}${API_AUTHENTICATE.REFRESH_TOKEN}`,
+            {
+              accessToken: appLocalStorage.get(LOCAL_STORAGE_KEYS.TOKEN),
+              refreshToken: appLocalStorage.get(
+                LOCAL_STORAGE_KEYS.REFRESH_TOKEN
+              ),
+              ipAddress: appLocalStorage.get(LOCAL_STORAGE_KEYS.IP_ADDRESS),
+              deviceName: appLocalStorage.get(LOCAL_STORAGE_KEYS.DEVICE_NAME),
+            }
+          );
+          isRefreshing = false;
+          const newAccessToken = response.data.data.accessToken;
+          const newRefreshToken = response.data.data.refreshToken;
+          appLocalStorage.set(LOCAL_STORAGE_KEYS.TOKEN, newAccessToken);
+          appLocalStorage.set(
+            LOCAL_STORAGE_KEYS.REFRESH_TOKEN,
+            newRefreshToken
+          );
+          originalRequest.headers.accessToken = newAccessToken;
+          originalRequest.headers.refreshToken = newRefreshToken;
 
-        return apiClient(originalRequest);
-      } catch (refreshError) {
-        appLocalStorage.remove(LOCAL_STORAGE_KEYS.TOKEN);
-        router.replace(ROUTERS.LOGIN);
+          return apiClient(originalRequest);
+        } catch (refreshError) {
+          isRefreshing = false;
+          appLocalStorage.remove(LOCAL_STORAGE_KEYS.TOKEN);
+          router.replace(ROUTERS.LOGIN);
+        }
+      } else {
+        await new Promise<void>((resolve) => {
+          const interval = setInterval(() => {
+            if (!isRefreshing) {
+              clearInterval(interval);
+              resolve();
+            }
+          }, 100);
+        });
       }
     }
 
@@ -213,6 +232,52 @@ export const deleteGW =
       apiClient.delete(`${getGateway(gw)}${url}`, {
         headers,
         ...options,
+      }),
+      timeout
+    );
+
+    return axiosResolver(axiosPromise);
+  };
+
+export const uploadFile =
+  ({ data, headers, gw, timeout }: CRUDProps<FormData>) =>
+  async (url: string) => {
+    const axiosPromise = requestWithTimeout(
+      apiClient.post(`${getGateway(gw)}${url}`, data, {
+        headers: {
+          ...headers,
+          'Content-Type':
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        },
+      }),
+      timeout
+    );
+    return axiosResolver(axiosPromise);
+  };
+
+export const downloadFile =
+  <R>({ options, headers, gw, timeout }: CRUDProps<undefined>) =>
+  (url: string): Promise<R> => {
+    const axiosPromise = requestWithTimeout(
+      apiClient.get(`${getGateway(gw)}${url}`, {
+        headers,
+        ...options,
+        responseType: 'blob',
+      }),
+      timeout
+    );
+
+    return axiosResolver(axiosPromise);
+  };
+
+export const exportFile =
+  <T, R>({ data, options, headers, gw, timeout }: CRUDProps<T>) =>
+  (url: string): Promise<R> => {
+    const axiosPromise = requestWithTimeout(
+      apiClient.post(`${getGateway(gw)}${url}`, data, {
+        headers,
+        ...options,
+        responseType: 'blob',
       }),
       timeout
     );

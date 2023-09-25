@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import withAuthentication from '@/hook/useAuthentication';
-import EditPricingSea from '@/components/pricing-sea-page/pricing-sea-edit';
+import EditSeaPricing from '@/components/sea-pricing-page/edit';
 
 function PricingSeaEditPage() {
   return (
@@ -8,7 +8,7 @@ function PricingSeaEditPage() {
       <Head>
         <title>ASL | SEA PRICING EDIT</title>
       </Head>
-      <EditPricingSea />
+      <EditSeaPricing />
     </>
   );
 }
@@ -16,15 +16,9 @@ function PricingSeaEditPage() {
 export default withAuthentication(PricingSeaEditPage);
 import { getStatic } from '@/lib/getStaticProps';
 export const getStaticProps = getStatic(['common', 'pricingSea']);
-export const getStaticPaths = async ({ locales }: { locales: [] }) => {
-  const ids: string[] = [];
-  const paths = ids.map(() =>
-    locales.map(() => ({
-      params: {},
-    }))
-  );
+export const getStaticPaths = () => {
   return {
-    paths,
+    paths: [],
     fallback: true,
   };
 };
